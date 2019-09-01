@@ -127,6 +127,9 @@ lantiq_setup_macs()
 		lan_mac=$(mtd_get_mac_ascii ubootconfig ethaddr)
 		wan_mac="$lan_mac"
 		;;
+	dlink,dwr-966)
+		lan_mac=$(mtd_get_mac_ascii ubootconfigA ethaddr)
+		;;
 	netgear,dm200)
 		lan_mac=$(mtd_get_mac_binary ART 0x0)
 		wan_mac=$(macaddr_add "$lan_mac" 1)
