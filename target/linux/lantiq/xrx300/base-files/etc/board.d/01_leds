@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# Copyright (C) 2011-2015 OpenWrt.org
+#
+
+. /lib/functions/leds.sh
+. /lib/functions/uci-defaults.sh
+
+board_config_update
+
+led_wifi="$(get_dt_led wifi)"
+[ -n "$led_wifi" ] && ucidef_set_led_wlan "wifi" "wifi" "$led_wifi" "phy0tpt"
+
+board_config_flush
+
+exit 0

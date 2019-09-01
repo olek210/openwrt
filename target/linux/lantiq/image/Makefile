@@ -130,6 +130,11 @@ include tp-link.mk
 include vr9.mk
 endif
 
+ifeq ($(SUBTARGET),xrx300)
+DEFAULT_SOC := grx390
+include grx390.mk
+endif
+
 ifeq ($(SUBTARGET),falcon)
 DEFAULT_SOC := falcon
 include falcon.mk
