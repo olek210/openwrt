@@ -1,0 +1,57 @@
+diff --git a/drivers/spi/spi-ar934x.c b/drivers/spi/spi-ar934x.c
+index d08dec09d423..3eb03d1c2c2c 100644
+--- a/drivers/spi/spi-ar934x.c
++++ b/drivers/spi/spi-ar934x.c
+@@ -16,6 +16,7 @@
+ #include <linux/module.h>
+ #include <linux/of_device.h>
+ #include <linux/spi/spi.h>
++#include <linux/spi/spi-mem.h>
+ 
+ #define DRIVER_NAME "spi-ar934x"
+ 
+@@ -154,6 +155,36 @@ static const struct of_device_id ar934x_spi_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, ar934x_spi_match);
+ 
++static int ar934x_exec_mem_op(struct spi_mem *mem,
++                              const struct spi_mem_op *op)
++{
++	struct ar934x_spi *sp = spi_controller_get_devdata(mem->spi->master);
++
++	/* Ensures that reading is performed on device connected
++	   to hardware cs0 */
++	if (mem->spi->chip_select || mem->spi->cs_gpiod)
++		return -ENOTSUPP;
++
++	/* Only use for fast-read op. */
++	if (op->cmd.opcode != 0x0b || op->data.dir != SPI_MEM_DATA_IN ||
++	    op->addr.nbytes != 3 || op->dummy.nbytes != 1)
++		return -ENOTSUPP;
++
++	/* disable GPIO mode */
++	iowrite32(0, sp->base + AR934X_SPI_REG_FS);
++
++	memcpy_fromio(op->data.buf.in, sp->base + op->addr.val, op->data.nbytes);
++
++	/* enable GPIO mode */
++	iowrite32(AR934X_SPI_ENABLE, sp->base + AR934X_SPI_REG_FS);
++
++	return 0;
++}
++
++static const struct spi_controller_mem_ops ar934x_mem_ops = {
++       .exec_op = ar934x_exec_mem_op,
++};
++
+ static int ar934x_spi_probe(struct platform_device *pdev)
+ {
+ 	struct spi_controller *ctlr;
+@@ -187,6 +218,7 @@ static int ar934x_spi_probe(struct platform_device *pdev)
+ 	/* restore pins to default state: CSn=1 DO=CLK=0 */
+ 	iowrite32(AR934X_SPI_IOC_INITVAL, base + AR934X_SPI_REG_IOC);
+ 
++	ctlr->mem_ops = &ar934x_mem_ops;
+ 	ctlr->mode_bits = SPI_LSB_FIRST;
+ 	ctlr->setup = ar934x_spi_setup;
+ 	ctlr->transfer_one_message = ar934x_spi_transfer_one_message;
