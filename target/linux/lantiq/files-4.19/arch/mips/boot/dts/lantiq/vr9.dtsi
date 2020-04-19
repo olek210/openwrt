@@ -455,17 +455,35 @@
 
 		pcie0: pcie@d900000 {
 			compatible = "lantiq,pcie-xrx200";
-
-			#interrupt-cells = <1>;
+			device_type = "pci";
 			#size-cells = <2>;
 			#address-cells = <3>;
-
-			reg = <0xd900000 0x1000>;
-
+			reg = < 0xD900000 0x1000 /* RC controller */
+				0xD000000 0x800000 /* Cfg Space */
+				0xE100900 0x100 /* App logic */
+				0xF106800 0x200 /* PCIe PHY Reg */
+				0xF600000 0x100000 /* MSI addr space */
+				0xF700000 0x400 /* MSI PIC */
+			>;
+			reg-names = "csr", "cfg", "app", "phy", "msi", "pic";
 			interrupt-parent = <&icu0>;
-			interrupts = <161 144>;
-
-			device_type = "pci";
+			interrupts = <163 164 165 38 161>;
+			interrupt-names = "msi0", "msi1", "msi2", "msi3", "ir";
+			#interrupt-cells = <1>;
+			interrupt-map-mask = <0 0 0 0x7>;
+			interrupt-map = <0 0 0 1 &icu0  144>,
+					<0 0 0 2 &icu0  145>,
+					<0 0 0 3 &icu0  146>,
+					<0 0 0 4 &icu0  147>;
+			bus-range = <0x00 0xff>;
+			ranges = <0x02000000 0 0x0C000000 0x0C000000 0 0x01000000    /* Non-pretechable memory 32bit */
+				  0x01000000 0 0x0D800000 0x0D800000 0 0x00100000    /* Downsream I/O */
+				 >;
+			resets = <&rcu0 12>,
+				 <&rcu0 22>;
+			reset-names = "phy", "core", "inbound", "outbound";
+			lantiq,inbound-shift = <0>;
+			lantiq,outbound-shift = <4>;
 
 			gpio-reset = <&gpio 38 GPIO_ACTIVE_HIGH>;
 		};
