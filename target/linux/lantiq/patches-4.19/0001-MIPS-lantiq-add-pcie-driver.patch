@@ -45,7 +45,7 @@ Signed-off-by: John Crispin <blogic@openwrt.org>
  	bool "XWAY"
  	select SOC_TYPE_XWAY
  	select HW_HAS_PCI
-+	select ARCH_SUPPORTS_MSI
++	select PCI_MSI
  	select MFD_SYSCON
  	select MFD_CORE
  
@@ -72,7 +72,7 @@ Signed-off-by: John Crispin <blogic@openwrt.org>
  obj-$(CONFIG_SOC_RT288X)	+= pci-rt2880.o
  obj-$(CONFIG_SOC_RT3883)	+= pci-rt3883.o
 +obj-$(CONFIG_PCIE_LANTIQ)	+= ifxmips_pcie_phy.o ifxmips_pcie.o fixup-lantiq-pcie.o
-+obj-$(CONFIG_PCIE_LANTIQ_MSI)	+= pcie-lantiq-msi.o
++obj-$(CONFIG_PCIE_LANTIQ_MSI)	+= ifxmips_pcie_msi.o
  obj-$(CONFIG_TANBAC_TB0219)	+= fixup-tb0219.o
  obj-$(CONFIG_TANBAC_TB0226)	+= fixup-tb0226.o
  obj-$(CONFIG_TANBAC_TB0287)	+= fixup-tb0287.o
@@ -1773,7 +1773,7 @@ Signed-off-by: John Crispin <blogic@openwrt.org>
 +#endif /* IFXMIPS_PCIE_AR10_H */
 --- /dev/null
 +++ b/arch/mips/pci/ifxmips_pcie_msi.c
-@@ -0,0 +1,392 @@
+@@ -0,0 +1,404 @@
 +/******************************************************************************
 +**
 +** FILE NAME    : ifxmips_pcie_msi.c
@@ -1808,7 +1808,6 @@ Signed-off-by: John Crispin <blogic@openwrt.org>
 +*/
 +
 +#ifndef AUTOCONF_INCLUDED
-+#include <linux/config.h>
 +#endif /* AUTOCONF_INCLUDED */
 +#include <linux/init.h>
 +#include <linux/sched.h>
@@ -1822,15 +1821,28 @@ Signed-off-by: John Crispin <blogic@openwrt.org>
 +#include <asm/irq.h>
 +#include <asm/traps.h>
 +
-+#include <asm/ifx/ifx_types.h>
-+#include <asm/ifx/ifx_regs.h>
-+#include <asm/ifx/common_routines.h>
-+#include <asm/ifx/irq.h>
-+
 +#include "ifxmips_pcie_reg.h"
 +#include "ifxmips_pcie.h"
 +
 +#define IFX_MSI_IRQ_NUM    16
++#define SM(_v, _f)		(((_v) << _f##_S) & (_f))
++
++#define IFX_MSI_PIC_REG_BASE                    (KSEG1 | 0x1F700000)
++#define IFX_PCIE_MSI_IR0                (INT_NUM_IM4_IRL0 + 27)
++#define IFX_PCIE_MSI_IR1                (INT_NUM_IM4_IRL0 + 28)
++#define IFX_PCIE_MSI_IR2                (INT_NUM_IM4_IRL0 + 29)
++#define IFX_PCIE_MSI_IR3                (INT_NUM_IM0_IRL0 + 30)
++
++#define IFX_MSI_PCI_INT_DISABLE                 0x80000000
++#define IFX_MSI_PIC_INT_LINE                    0x30000000
++#define IFX_MSI_PIC_MSG_ADDR                    0x0FFF0000
++#define IFX_MSI_PIC_MSG_DATA                    0x0000FFFF
++#define IFX_MSI_PIC_BIG_ENDIAN                  1
++#define IFX_MSI_PIC_INT_LINE_S                  28
++#define IFX_MSI_PIC_MSG_ADDR_S                  16
++#define IFX_MSI_PIC_MSG_DATA_S                  0x0
++
++#define INT_NUM_IM4_IRL31               (INT_NUM_IM4_IRL0 + 31)
 +
 +enum {
 +    IFX_PCIE_MSI_IDX0 = 0,
@@ -1952,7 +1964,7 @@ Signed-off-by: John Crispin <blogic@openwrt.org>
 +    IFX_PCIE_PRINT(PCIE_MSG_MSI, "%s %s enter\n", __func__, pci_name(pdev));
 +
 +    /* XXX, skip RC MSI itself */
-+    if (pdev->pcie_type == PCI_EXP_TYPE_ROOT_PORT) {
++    if (pci_pcie_type(pdev) == PCI_EXP_TYPE_ROOT_PORT) {
 +        IFX_PCIE_PRINT(PCIE_MSG_MSI, "%s RC itself doesn't use MSI interrupt\n", __func__);
 +        return -EINVAL;
 +    }
@@ -1962,7 +1974,7 @@ Signed-off-by: John Crispin <blogic@openwrt.org>
 +     * wants.  Most devices only want 1, which will give 
 +     * configured_private_bits and request_private_bits equal 0. 
 +     */
-+    pci_read_config_word(pdev, desc->msi_attrib.pos + PCI_MSI_FLAGS, &control);
++    pci_read_config_word(pdev, pdev->msi_cap + PCI_MSI_FLAGS, &control);
 +
 +    /*
 +     * If the number of private bits has been configured then use 
@@ -2053,9 +2065,9 @@ Signed-off-by: John Crispin <blogic@openwrt.org>
 +    /* Update the number of IRQs the device has available to it */
 +    control &= ~PCI_MSI_FLAGS_QSIZE;
 +    control |= (request_private_bits << 4);
-+    pci_write_config_word(pdev, desc->msi_attrib.pos + PCI_MSI_FLAGS, control);
++    pci_write_config_word(pdev, pdev->msi_cap + PCI_MSI_FLAGS, control);
 +
-+    set_irq_msi(irq, desc);
++    irq_set_msi_desc(irq, desc);
 +    msg.address_hi = 0x0;
 +    msg.address_lo = msi_irqs[pcie_port].msi_phy_base;
 +    msg.data = SM((1 << pos), IFX_MSI_PIC_MSG_DATA);
@@ -2649,7 +2661,7 @@ Signed-off-by: John Crispin <blogic@openwrt.org>
 +
 --- /dev/null
 +++ b/arch/mips/pci/ifxmips_pcie_pm.c
-@@ -0,0 +1,176 @@
+@@ -0,0 +1,175 @@
 +/******************************************************************************
 +**
 +** FILE NAME    : ifxmips_pcie_pm.c
@@ -2688,7 +2700,6 @@ Signed-off-by: John Crispin <blogic@openwrt.org>
 +#define EXPORT_SYMTAB
 +#endif
 +#ifndef AUTOCONF_INCLUDED
-+#include <linux/config.h>
 +#endif /* AUTOCONF_INCLUDED */
 +#include <linux/version.h>
 +#include <linux/module.h>
