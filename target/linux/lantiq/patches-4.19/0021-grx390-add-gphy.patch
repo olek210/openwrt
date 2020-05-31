@@ -1,0 +1,29 @@
+--- a/arch/mips/lantiq/xway/sysctrl.c
++++ b/arch/mips/lantiq/xway/sysctrl.c
+@@ -114,11 +114,15 @@ static u32 pmu_clk_cr_b[] = {
+ #define PMU_PPE_DP	BIT(23)
+ #define PMU_PPE_DPLUS	BIT(24)
+ #define PMU_USB1_P	BIT(26)
++#define PMU_GPHY3	BIT(26) /* grx390 */
+ #define PMU_USB1	BIT(27)
+ #define PMU_SWITCH	BIT(28)
+ #define PMU_PPE_TOP	BIT(29)
++#define PMU_GPHY0	BIT(29) /* ar10, grx390 */
+ #define PMU_GPHY	BIT(30)
++#define PMU_GPHY1	BIT(30) /* ar10, grx390 */
+ #define PMU_PCIE_CLK	BIT(31)
++#define PMU_GPHY2	BIT(31) /* ar10, grx390 */
+ 
+ #define PMU1_PCIE_PHY	BIT(0)	/* vr9-specific,moved in ar10/grx390 */
+ #define PMU1_PCIE_CTL	BIT(1)
+@@ -507,6 +511,10 @@ void __init ltq_soc_init(void)
+ 		clkdev_add_pmu("1a800000.pcie", "ctl", 1, 1, PMU1_PCIE2_CTL);
+ 		clkdev_add_pmu("1e108000.eth", NULL, 0, 0, PMU_SWITCH | PMU_PPE_DP);
+ 		clkdev_add_pmu("1da00000.usif", "NULL", 1, 0, PMU_USIF);
++		clkdev_add_pmu("1f203020.gphy", NULL, 1, 0, PMU_GPHY0);
++		clkdev_add_pmu("1f203058.gphy", NULL, 1, 0, PMU_GPHY1);
++		clkdev_add_pmu("1f2030ac.gphy", NULL, 1, 0, PMU_GPHY2);
++		clkdev_add_pmu("1f203264.gphy", NULL, 1, 0, PMU_GPHY3);
+ 		clkdev_add_pmu("1e103100.deu", NULL, 1, 0, PMU_DEU);
+ 	} else if (of_machine_is_compatible("lantiq,ar10")) {
+ 		clkdev_add_static(ltq_ar10_cpu_hz(), ltq_ar10_fpi_hz(),
