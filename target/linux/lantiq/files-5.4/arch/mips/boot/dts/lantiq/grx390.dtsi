@@ -353,7 +353,7 @@
 
 			device_type = "pci";
 
-			gpio-reset = <&gpio 38 GPIO_ACTIVE_HIGH>;
+			gpio-reset = <&gpio 34 GPIO_ACTIVE_HIGH>;
 		};
 	};
 };
