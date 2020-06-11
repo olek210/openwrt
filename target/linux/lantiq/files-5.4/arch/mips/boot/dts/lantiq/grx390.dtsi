@@ -90,6 +90,19 @@
 			interrupts = <150 151 152 153 154 155>;
 		};
 
+		pcie0_phy: phy@106800 {
+			compatible = "lantiq,vrx200-pcie-phy";
+			reg = <0x106800 0x100>;
+			lantiq,rcu = <&rcu0>;
+			lantiq,rcu-endian-offset = <0x4c>;
+			lantiq,rcu-big-endian-mask = <0x80>; /* bit 7 */
+			big-endian;
+			resets = <&reset0 12 24>, <&reset0 22 22>;
+			reset-names = "phy", "pcie";
+			#phy-cells = <1>;
+		};
+
+
 		rcu0: rcu@203000 {
 			compatible = "lantiq,xrx200-rcu", "simple-mfd", "syscon";
 			reg = <0x203000 0x1000>;
@@ -316,6 +329,30 @@
 			compatible = "lantiq,ppe-xrx200";
 			interrupt-parent = <&icu0>;
 			interrupts = <96>;
+		};
+
+		pcie0: pcie@d900000 {
+			compatible = "lantiq,pcie-xrx200";
+
+			#interrupt-cells = <1>;
+			#size-cells = <2>;
+			#address-cells = <3>;
+
+			reg = <0xd900000 0x1000>;
+
+			interrupt-parent = <&icu0>;
+			interrupts = <161 144>;
+
+			phys = <&pcie0_phy LANTIQ_PCIE_PHY_MODE_36MHZ>;
+			phy-names = "pcie";
+
+			resets = <&reset0 22 22>;
+
+			lantiq,rcu = <&rcu0>;
+
+			device_type = "pci";
+
+			gpio-reset = <&gpio 38 GPIO_ACTIVE_HIGH>;
 		};
 	};
 };
