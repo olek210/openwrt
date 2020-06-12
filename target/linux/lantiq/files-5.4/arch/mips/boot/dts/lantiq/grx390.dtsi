@@ -110,7 +110,7 @@
 			lantiq,rcu-endian-offset = <0x4c>;
 			lantiq,rcu-big-endian-mask = <0x80>; /* bit 7 */
 			big-endian;
-			resets = <&reset0 13 25>, <&reset0 27 27>;
+			resets = <&reset0 13 11>, <&reset0 27 12>;
 			reset-names = "phy", "pcie";
 			#phy-cells = <1>;
 		};
@@ -395,7 +395,7 @@
 			phys = <&pcie1_phy LANTIQ_PCIE_PHY_MODE_36MHZ>;
 			phy-names = "pcie";
 
-			resets = <&reset0 27 27>;
+			resets = <&reset0 27 12>;
 
 			lantiq,rcu = <&rcu0>;
 
