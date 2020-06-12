@@ -356,6 +356,7 @@
 		};
 
 		pcie0: pcie@d900000 {
+			status = "disabled";
 			compatible = "lantiq,pcie-xrx200";
 
 			#interrupt-cells = <1>;
@@ -381,6 +382,7 @@
 
 
 		pcie1: pcie@9000000 {
+			status = "disabled";
 			compatible = "lantiq,pcie-xrx200";
 
 			#interrupt-cells = <1>;
@@ -405,6 +407,7 @@
 		};
 
 		pcie2: pcie@a800000 {
+			status = "disabled";
 			compatible = "lantiq,pcie-xrx200";
 
 			#interrupt-cells = <1>;
