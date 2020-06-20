@@ -164,7 +164,8 @@ define Device/bt_homehub-v5a
   DEVICE_VARIANT := Type A
   BOARD_NAME := BTHOMEHUBV5A
   DEVICE_PACKAGES := kmod-ath9k kmod-owl-loader \
-	kmod-ath10k-ct ath10k-firmware-qca988x-ct wpad-basic kmod-usb-dwc2
+	kmod-ath10k-ct ath10k-firmware-qca988x-ct wpad-basic kmod-usb-dwc2 \
+	gphy-firmware-xrx200-ge
   SUPPORTED_DEVICES += BTHOMEHUBV5A
 endef
 TARGET_DEVICES += bt_homehub-v5a
