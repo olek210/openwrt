@@ -23,7 +23,7 @@ endef
 
 define Package/gphy-firmware/install
 	$(INSTALL_DIR) $(1)/lib/firmware
-	$(INSTALL_DATA) $(PKG_BUILD_DIR)/$(2) $(1)/lib/firmware/$(3)
+	$(INSTALL_DATA) files/$(2) $(1)/lib/firmware/$(3)
 endef
 
 define Package/gphy-firmware-xrx200-fe
@@ -31,7 +31,7 @@ define Package/gphy-firmware-xrx200-fe
 endef
 
 define Package/gphy-firmware-xrx200-fe/description
-  This package contains firmware integrated for Fast Ethernet PHY integrated into xRx200 SoCs.
+  This package contains firmware for Fast Ethernet PHY integrated into xRx200 SoCs.
 endef
 
 define Package/gphy-firmware-xrx200-fe/install
@@ -43,7 +43,7 @@ define Package/gphy-firmware-xrx200-ge
 endef
 
 define Package/gphy-firmware-xrx200-ge/description
-  This package contains firmware integrated for Gigabit Ethernet PHY integrated into xRx200 SoCs.
+  This package contains firmware for Gigabit Ethernet PHY integrated into xRx200 SoCs.
 endef
 
 define Package/gphy-firmware-xrx200-ge/install
