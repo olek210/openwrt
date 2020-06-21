@@ -35,7 +35,6 @@ define Package/gphy-firmware-xrx200-fe/description
 endef
 
 define Package/gphy-firmware-xrx200-fe/install
-  $(call Package/gphy-firmware/install,$(1),xrx200_phy22f_a14.bin,xrx200_phy22f_a14.bin)
   $(call Package/gphy-firmware/install,$(1),xrx200_phy22f_a22.bin,xrx200_phy22f_a22.bin)
 endef
 
@@ -48,7 +47,6 @@ define Package/gphy-firmware-xrx200-ge/description
 endef
 
 define Package/gphy-firmware-xrx200-ge/install
-  $(call Package/gphy-firmware/install,$(1)/,xrx200_phy11g_a14.bin,xrx200_phy11g_a14.bin)
   $(call Package/gphy-firmware/install,$(1),xrx200_phy11g_a22.bin,xrx200_phy11g_a22.bin)
 endef
 
