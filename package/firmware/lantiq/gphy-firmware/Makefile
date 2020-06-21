@@ -48,7 +48,7 @@ define Package/gphy-firmware-xrx200-ge/description
 endef
 
 define Package/gphy-firmware-xrx200-ge/install
-  $(call Package/gphy-firmware/install,$(1),xrx200_phy11g_a14.bin,xrx200_phy11g_a14.bin)
+  $(call Package/gphy-firmware/install,$(1)/,xrx200_phy11g_a14.bin,xrx200_phy11g_a14.bin)
   $(call Package/gphy-firmware/install,$(1),xrx200_phy11g_a22.bin,xrx200_phy11g_a22.bin)
 endef
 
@@ -56,5 +56,5 @@ define Build/Compile
 
 endef
 
-$(eval $(call BuildPackage,gphy-firmware-xRx200-fe))
-$(eval $(call BuildPackage,gphy-firmware-xRx200-ge))
+$(eval $(call BuildPackage,gphy-firmware-xrx200-fe))
+$(eval $(call BuildPackage,gphy-firmware-xrx200-ge))
