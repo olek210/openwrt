@@ -23,24 +23,38 @@ endef
 
 define Package/gphy-firmware/install
 	$(INSTALL_DIR) $(1)/lib/firmware
-	$(INSTALL_DATA) $(PKG_BUILD_DIR)/$(2) $(1)/lib/firmware/$(2)
+	$(INSTALL_DATA) $(PKG_BUILD_DIR)/$(2) $(1)/lib/firmware/$(3)
+endef
+
+define Package/gphy-firmware-xrx200-fe
+  $(call Package/gphy-firmware-defaults, xRx200 Fast PHY Firmware)
+endef
+
+define Package/gphy-firmware-xrx200-fe/description
+  This package contains firmware integrated for Fast Ethernet PHY integrated into xRx200 SoCs.
+endef
+
+define Package/gphy-firmware-xrx200-fe/install
+  $(call Package/gphy-firmware/install,$(1),xrx200_phy22f_a14.bin,xrx200_phy22f_a14.bin)
+  $(call Package/gphy-firmware/install,$(1),xrx200_phy22f_a22.bin,xrx200_phy22f_a22.bin)
 endef
 
 define Package/gphy-firmware-xrx200-ge
-  $(call Package/gphy-firmware-defaults, Firmware for Gigabit PHY integrated into xrx200)
+  $(call Package/gphy-firmware-defaults, xRx200 Gigabit PHY Firmware)
 endef
 
 define Package/gphy-firmware-xrx200-ge/description
-  This package contains firmware integrated for Gigabit PHY integrated into xrx200 SoCs.
+  This package contains firmware integrated for Gigabit Ethernet PHY integrated into xRx200 SoCs.
 endef
 
 define Package/gphy-firmware-xrx200-ge/install
-  $(call Package/gphy-firmware/install,$(1),xrx200_phy11g_a14.bin)
-  $(call Package/gphy-firmware/install,$(1),xrx200_phy11g_a22.bin)
+  $(call Package/gphy-firmware/install,$(1),xrx200_phy11g_a14.bin,xrx200_phy11g_a14.bin)
+  $(call Package/gphy-firmware/install,$(1),xrx200_phy11g_a22.bin,xrx200_phy11g_a22.bin)
 endef
 
 define Build/Compile
 
 endef
 
-$(eval $(call BuildPackage,gphy-firmware-xrx200-ge))
+$(eval $(call BuildPackage,gphy-firmware-xRx200-fe))
+$(eval $(call BuildPackage,gphy-firmware-xRx200-ge))
