@@ -27,7 +27,7 @@ define Package/gphy-firmware/install
 endef
 
 define Package/gphy-firmware-xrx200-fe
-  $(call Package/gphy-firmware-defaults, xRx200 Fast PHY Firmware)
+  $(call Package/gphy-firmware-defaults, xRx200 FE PHY Firmware)
 endef
 
 define Package/gphy-firmware-xrx200-fe/description
@@ -40,7 +40,7 @@ define Package/gphy-firmware-xrx200-fe/install
 endef
 
 define Package/gphy-firmware-xrx200-ge
-  $(call Package/gphy-firmware-defaults, xRx200 Gigabit PHY Firmware)
+  $(call Package/gphy-firmware-defaults, xRx200 GE PHY Firmware)
 endef
 
 define Package/gphy-firmware-xrx200-ge/description
