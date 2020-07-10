@@ -25,7 +25,7 @@ define KernelPackage/switch-lantiq-xrx200
   TITLE:=Lantiq xRx200/xRx300 switch support
   KCONFIG:=CONFIG_LANTIQ_XRX200_LEGACY
   FILES:=$(LINUX_DIR)/drivers/net/ethernet/lantiq_xrx200_legacy.ko
-  AUTOLOAD:=$(call AutoLoad,42,lantiq-xrx200)
+  AUTOLOAD:=$(call AutoLoad,42,lantiq_xrx200_legacy)
 endef
 
 define KernelPackage/switch-lantiq-xrx200/description
