@@ -29,9 +29,9 @@ define U-Boot/zc702
   BUILD_DEVICES:=xlnx_zynq-zc702
 endef
 
-define U-Boot/qmtech-sk
+define U-Boot/qmtech
   NAME:=QMTECH Zynq Starter Kit
-  BUILD_DEVICES:=qmtech_zynq-xc7z010-sk
+  BUILD_DEVICES:=qmtech_zynq-qmtech
 endef
 
 define U-Boot/zed

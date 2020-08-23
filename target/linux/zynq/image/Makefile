@@ -71,12 +71,12 @@ define Device/digilent_zynq-zybo-z7
 endef
 TARGET_DEVICES += digilent_zynq-zybo-z7
 
-define Device/qmtech_zynq-xc7z010-sk
+define Device/qmtech_zynq-qmtech
         $(call Device/FitImageGzip)
         DEVICE_VENDOR := QMTECH
         DEVICE_MODEL := Zynq XC7Z010 Starter Kit
 endef
-TARGET_DEVICES += qmtech_zynq-xc7z010-sk
+TARGET_DEVICES += qmtech_zynq-qmtech
 
 define Device/xlnx_zynq-zc702
 	$(call Device/FitImageGzip)
