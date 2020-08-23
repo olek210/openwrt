@@ -29,6 +29,11 @@ define U-Boot/zc702
   BUILD_DEVICES:=xlnx_zynq-zc702
 endef
 
+define U-Boot/qmtech-sk
+  NAME:=QMTECH Zynq Starter Kit
+  BUILD_DEVICES:=qmtech_zynq-xc7z010-sk
+endef
+
 define U-Boot/zed
   NAME:=Avnet Digilent ZedBoard Dev Board
   BUILD_DEVICES:=avnet_zynq-zed
@@ -45,6 +50,7 @@ define U-Boot/zybo_z7
 endef
 
 UBOOT_TARGETS := \
+	qmtech \
 	zc702 \
 	zed \
 	zybo \
