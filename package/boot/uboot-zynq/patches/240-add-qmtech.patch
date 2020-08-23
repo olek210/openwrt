@@ -1,8 +1,8 @@
 diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 0e2ffdb87f..f2f663d337 100644
+index 20dbc2ff84..7426bebad8 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
-@@ -187,6 +187,7 @@ dtb-$(CONFIG_ARCH_ZYNQ) += \
+@@ -222,6 +222,7 @@ dtb-$(CONFIG_ARCH_ZYNQ) += \
  	zynq-microzed.dtb \
  	zynq-minized.dtb \
  	zynq-picozed.dtb \
@@ -445,20 +445,23 @@ index 0000000000..d3fdb2a275
 +};
 diff --git a/configs/zynq_qmtech_defconfig b/configs/zynq_qmtech_defconfig
 new file mode 100644
-index 0000000000..432cd99f10
+index 0000000000..c526724023
 --- /dev/null
 +++ b/configs/zynq_qmtech_defconfig
-@@ -0,0 +1,79 @@
+@@ -0,0 +1,82 @@
 +CONFIG_ARM=y
++CONFIG_SPL_SYS_DCACHE_OFF=y
 +CONFIG_ARCH_ZYNQ=y
 +CONFIG_SYS_TEXT_BASE=0x4000000
++CONFIG_SPL_STACK_R_ADDR=0x200000
 +CONFIG_SPL=y
 +CONFIG_DEBUG_UART_BASE=0xe0001000
 +CONFIG_DEBUG_UART_CLOCK=50000000
 +CONFIG_IDENT_STRING=" Xilinx Zynq ZC702"
-+CONFIG_SPL_STACK_R_ADDR=0x200000
 +CONFIG_DEBUG_UART=y
 +CONFIG_DISTRO_DEFAULTS=y
++CONFIG_SYS_CUSTOM_LDSCRIPT=y
++CONFIG_SYS_LDSCRIPT="arch/arm/mach-zynq/u-boot.lds"
 +CONFIG_FIT=y
 +CONFIG_FIT_SIGNATURE=y
 +CONFIG_FIT_VERBOSE=y
