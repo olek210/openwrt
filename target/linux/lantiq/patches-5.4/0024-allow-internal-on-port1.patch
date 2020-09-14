@@ -1,0 +1,14 @@
+diff --git a/drivers/net/dsa/lantiq_gswip.c b/drivers/net/dsa/lantiq_gswip.c
+index 521ebc072903..1964c98de3af 100644
+--- a/drivers/net/dsa/lantiq_gswip.c
++++ b/drivers/net/dsa/lantiq_gswip.c
+@@ -1404,7 +1404,8 @@ static void gswip_phylink_validate(struct dsa_switch *ds, int port,
+ 		if (!phy_interface_mode_is_rgmii(state->interface) &&
+ 		    state->interface != PHY_INTERFACE_MODE_MII &&
+ 		    state->interface != PHY_INTERFACE_MODE_REVMII &&
+-		    state->interface != PHY_INTERFACE_MODE_RMII)
++		    state->interface != PHY_INTERFACE_MODE_RMII &&
++		    state->interface != PHY_INTERFACE_MODE_INTERNAL)
+ 			goto unsupported;
+ 		break;
+ 	case 2:
