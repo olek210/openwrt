@@ -20,10 +20,10 @@
  		clkdev_add_pmu("1a800000.pcie", "ctl", 1, 1, PMU1_PCIE2_CTL);
  		clkdev_add_pmu("1e10b308.eth", NULL, 0, 0, PMU_SWITCH | PMU_PPE_DP);
  		clkdev_add_pmu("1da00000.usif", "NULL", 1, 0, PMU_USIF);
-+		clkdev_add_pmu("1f203020.gphy", NULL, 1, 0, PMU_GPHY0);
-+		clkdev_add_pmu("1f203058.gphy", NULL, 1, 0, PMU_GPHY1);
-+		clkdev_add_pmu("1f2030ac.gphy", NULL, 1, 0, PMU_GPHY2);
-+		clkdev_add_pmu("1f203264.gphy", NULL, 1, 0, PMU_GPHY3);
++		clkdev_add_pmu("1e108000.switch", "gphy0", 0, 0, PMU_GPHY0);
++		clkdev_add_pmu("1e108000.switch", "gphy1", 0, 0, PMU_GPHY1);
++		clkdev_add_pmu("1e108000.switch", "gphy2", 0, 0, PMU_GPHY2);
++		clkdev_add_pmu("1e108000.switch", "gphy3", 0, 0, PMU_GPHY3);
  		clkdev_add_pmu("1e103100.deu", NULL, 1, 0, PMU_DEU);
  	} else if (of_machine_is_compatible("lantiq,ar10")) {
  		clkdev_add_static(ltq_ar10_cpu_hz(), ltq_ar10_fpi_hz(),
