@@ -36,6 +36,7 @@ lantiq_setup_interfaces()
 	avm,fritz7360-v2|\
 	avm,fritz7362sl|\
 	buffalo,wbmr-300hpd|\
+	dlink,dwr-966|\
 	tplink,tdw8970|\
 	tplink,tdw8980|\
 	tplink,vr200|\
