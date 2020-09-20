@@ -317,6 +317,21 @@ endef
 $(eval $(call KernelPackage,hwmon-ltc4151))
 
 
+define KernelPackage/hwmon-ltq-cputemp
+  TITLE:=Lantiq xRx200 CPU monitoring support
+  KCONFIG:=CONFIG_SENSORS_LTQ_CPUTEMP
+  FILES:=$(LINUX_DIR)/drivers/hwmon/ltq-cputemp.ko
+  AUTOLOAD:=$(call AutoProbe,ltq-cputemp)
+  $(call AddDepends/hwmon,)
+endef
+
+define KernelPackage/hwmon-ltq-cputemp/description
+ Kernel module for Lantiq xRx200 CPU thermal sensor
+endef
+
+$(eval $(call KernelPackage,hwmon-ltq-cputemp))
+
+
 define KernelPackage/hwmon-mcp3021
   TITLE:=MCP3021/3221 monitoring support
   KCONFIG:=CONFIG_SENSORS_MCP3021
