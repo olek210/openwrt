@@ -1,3 +1,16 @@
+diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
+index 8dc28b26916e..5e5ae890f238 100644
+--- a/drivers/hwmon/Kconfig
++++ b/drivers/hwmon/Kconfig
+@@ -921,7 +921,7 @@ config SENSORS_LTC4261
+ 	  be called ltc4261.
+ 
+ config SENSORS_LTQ_CPUTEMP
+-	bool "Lantiq cpu temperature sensor driver"
++	tristate "Lantiq cpu temperature sensor driver"
+ 	depends on LANTIQ
+ 	help
+ 	  If you say yes here you get support for the temperature
 diff --git a/drivers/hwmon/ltq-cputemp.c b/drivers/hwmon/ltq-cputemp.c
 index 019e770d4c0c..6db01c8b1520 100644
 --- a/drivers/hwmon/ltq-cputemp.c
