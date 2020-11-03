@@ -84,9 +84,9 @@
 			phy-handle = <&phy11>;
 		};
 
-		ethernet@3 {
+		ethernet@4 {
 			compatible = "lantiq,xrx200-pdi-port";
-			reg = <3>;
+			reg = <4>;
 			phy-mode = "mii";
 			phy-handle = <&phy14>;
 		};

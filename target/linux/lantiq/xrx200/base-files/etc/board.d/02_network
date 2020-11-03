@@ -14,7 +14,7 @@ lantiq_setup_interfaces()
 	case "$board" in
 	alphanetworks,asl56026)
 		ucidef_add_switch "switch0" \
-			"2:lan" "3:lan" "6t@eth0"
+			"2:lan" "4:lan" "6t@eth0"
 		;;
 	arcadyan,arv7519rw22)
 		ucidef_add_switch "switch0" \
