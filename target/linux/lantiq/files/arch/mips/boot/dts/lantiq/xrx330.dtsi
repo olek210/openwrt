@@ -301,9 +301,9 @@
 
 		eth0: eth@e10b308 {
 			compatible = "lantiq,xrx200-net";
-			reg = <	0xe10b308 0x30>; /* pmac */
+			reg = <0xe10b308 0x30>; /* pmac */
 			interrupt-parent = <&icu0>;
-			interrupts = <73 72>;
+			interrupts = <73>, <72>;
 			interrupt-names = "tx", "rx";
 			resets = <&reset0 21 16>, <&reset0 8 8>, <&reset0 3 3>;
 			reset-names = "switch", "ppe", "ppe_dsp";
