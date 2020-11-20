@@ -60,6 +60,12 @@ lantiq_setup_dsl()
 	local annex="a"
 
 	case "$board" in
+	dlink,dwr-966)
+		return
+		;;
+	esac
+
+	case "$board" in
 	arcadyan,vgv7510kw22-brn|\
 	arcadyan,vgv7510kw22-nor|\
 	avm,fritz3370-rev2-hynix|\
