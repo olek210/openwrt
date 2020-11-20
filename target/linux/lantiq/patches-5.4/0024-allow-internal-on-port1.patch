@@ -1,0 +1,12 @@
+--- a/drivers/net/dsa/lantiq_gswip.c
++++ b/drivers/net/dsa/lantiq_gswip.c
+@@ -1403,7 +1403,8 @@ static void gswip_phylink_validate(struc
+ 		if (!phy_interface_mode_is_rgmii(state->interface) &&
+ 		    state->interface != PHY_INTERFACE_MODE_MII &&
+ 		    state->interface != PHY_INTERFACE_MODE_REVMII &&
+-		    state->interface != PHY_INTERFACE_MODE_RMII)
++		    state->interface != PHY_INTERFACE_MODE_RMII &&
++		    state->interface != PHY_INTERFACE_MODE_INTERNAL)
+ 			goto unsupported;
+ 		break;
+ 	case 2:
