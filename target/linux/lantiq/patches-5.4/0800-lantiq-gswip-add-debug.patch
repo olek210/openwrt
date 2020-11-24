@@ -1,4 +1,4 @@
-From 5865e909f7b317a8ea3b0d2faa4b23da12dbf124 Mon Sep 17 00:00:00 2001
+From 176eeace5b962e16a52f9c2e76783489b7900b7b Mon Sep 17 00:00:00 2001
 From: Aleksander Jan Bajkowski <A.Bajkowski@stud.elka.pw.edu.pl>
 Date: Sat, 21 Nov 2020 23:37:38 +0100
 Subject: [PATCH] lantiq: gswip add debug
@@ -6,53 +6,51 @@ Subject: [PATCH] lantiq: gswip add debug
 ---
  drivers/net/ethernet/lantiq_xrx200.c | 2 ++
  net/dsa/slave.c                      | 1 +
- net/dsa/tag_gswip.c                  | 4 +++-
- 3 files changed, 6 insertions(+), 1 deletion(-)
+ net/dsa/tag_gswip.c                  | 2 ++
+ 3 files changed, 5 insertions(+)
 
 diff --git a/drivers/net/ethernet/lantiq_xrx200.c b/drivers/net/ethernet/lantiq_xrx200.c
-index 51ed8a54d380..ed1bc7d2ccf3 100644
+index 51ed8a54d380..4863a5470ef2 100644
 --- a/drivers/net/ethernet/lantiq_xrx200.c
 +++ b/drivers/net/ethernet/lantiq_xrx200.c
 @@ -291,6 +291,8 @@ static netdev_tx_t xrx200_start_xmit(struct sk_buff *skb,
  	dma_addr_t mapping;
  	int len;
  
-+	netdev_dbg(net_dev, "xrx200_start_xmit\n");
++	netdev_info(net_dev, "xrx200_start_xmit\n");
 +
  	skb->dev = net_dev;
  	if (skb_put_padto(skb, ETH_ZLEN)) {
  		net_dev->stats.tx_dropped++;
 diff --git a/net/dsa/slave.c b/net/dsa/slave.c
-index 3bc5ca40c9fb..e0ff988afd16 100644
+index 3bc5ca40c9fb..600ed3cdc0ae 100644
 --- a/net/dsa/slave.c
 +++ b/net/dsa/slave.c
 @@ -567,6 +567,7 @@ static netdev_tx_t dsa_slave_xmit(struct sk_buff *skb, struct net_device *dev)
  	 */
  	dsa_skb_tx_timestamp(p, skb);
  
-+	pr_debug("dsa_slave_xmit\n");
++	pr_info("dsa_slave_xmit\n");
  	/* Transmit function may have to reallocate the original SKB,
  	 * in which case it must have freed it. Only free it here on error.
  	 */
 diff --git a/net/dsa/tag_gswip.c b/net/dsa/tag_gswip.c
-index 408d4af390a0..d9d5df5d5f6b 100644
+index 408d4af390a0..a666ba4423b5 100644
 --- a/net/dsa/tag_gswip.c
 +++ b/net/dsa/tag_gswip.c
 @@ -63,6 +63,7 @@ static struct sk_buff *gswip_tag_xmit(struct sk_buff *skb,
  	int err;
  	u8 *gswip_tag;
  
-+	pr_debug("gswip_tag_xmit\n");
++	pr_info("gswip_tag_xmit\n");
  	err = skb_cow_head(skb, GSWIP_TX_HEADER_LEN);
  	if (err)
  		return NULL;
-@@ -85,7 +86,8 @@ static struct sk_buff *gswip_tag_rcv(struct sk_buff *skb,
- {
+@@ -86,6 +87,7 @@ static struct sk_buff *gswip_tag_rcv(struct sk_buff *skb,
  	int port;
  	u8 *gswip_tag;
--
-+	
-+	pr_debug("gswip_tag_rcv\n");
+ 
++	pr_info("gswip_tag_rcv\n");
  	if (unlikely(!pskb_may_pull(skb, GSWIP_RX_HEADER_LEN)))
  		return NULL;
  
