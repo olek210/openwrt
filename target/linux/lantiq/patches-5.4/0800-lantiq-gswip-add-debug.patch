@@ -1,27 +1,38 @@
-From a9a6a1e28086830498de60e74c01575d446b3e0f Mon Sep 17 00:00:00 2001
+From 1f9ac7843b19d4b497e6a842eefb443e82197c19 Mon Sep 17 00:00:00 2001
 From: Aleksander Jan Bajkowski <A.Bajkowski@stud.elka.pw.edu.pl>
 Date: Sat, 21 Nov 2020 23:37:38 +0100
 Subject: [PATCH] lantiq: gswip add debug
 
 ---
- drivers/net/ethernet/lantiq_xrx200.c | 13 +++++++++++--
+ drivers/net/ethernet/lantiq_xrx200.c | 24 ++++++++++++++++++++----
  net/dsa/slave.c                      |  6 +++++-
  net/dsa/tag_gswip.c                  |  2 ++
- 3 files changed, 18 insertions(+), 3 deletions(-)
+ 3 files changed, 27 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/net/ethernet/lantiq_xrx200.c b/drivers/net/ethernet/lantiq_xrx200.c
-index 51ed8a54d380..ca1396a90bf0 100644
+index 51ed8a54d380..a18ef4a0d5ad 100644
 --- a/drivers/net/ethernet/lantiq_xrx200.c
 +++ b/drivers/net/ethernet/lantiq_xrx200.c
-@@ -133,6 +133,7 @@ static int xrx200_open(struct net_device *net_dev)
+@@ -119,6 +119,7 @@ static int xrx200_open(struct net_device *net_dev)
+ 	napi_enable(&priv->chan_tx.napi);
+ 	ltq_dma_open(&priv->chan_tx.dma);
+ 	ltq_dma_enable_irq(&priv->chan_tx.dma);
++	netdev_warn(net_dev, "ltq_dma_enablw_irq\n");
+ 
+ 	napi_enable(&priv->chan_rx.napi);
+ 	ltq_dma_open(&priv->chan_rx.dma);
+@@ -131,8 +132,10 @@ static int xrx200_open(struct net_device *net_dev)
+ 	usleep_range(20, 40);
+ 	xrx200_flush_dma(&priv->chan_rx);
  	ltq_dma_enable_irq(&priv->chan_rx.dma);
++	netdev_warn(net_dev, "ltq_dma_enablw_irq\n");
  
  	netif_wake_queue(net_dev);
 +	netdev_err(net_dev, "netif_wake_queue\n");
  
  	return 0;
  }
-@@ -142,6 +143,7 @@ static int xrx200_close(struct net_device *net_dev)
+@@ -142,6 +145,7 @@ static int xrx200_close(struct net_device *net_dev)
  	struct xrx200_priv *priv = netdev_priv(net_dev);
  
  	netif_stop_queue(net_dev);
@@ -29,7 +40,19 @@ index 51ed8a54d380..ca1396a90bf0 100644
  
  	napi_disable(&priv->chan_rx.napi);
  	ltq_dma_close(&priv->chan_rx.dma);
-@@ -270,8 +272,10 @@ static int xrx200_tx_housekeeping(struct napi_struct *napi, int budget)
+@@ -230,8 +234,10 @@ static int xrx200_poll_rx(struct napi_struct *napi, int budget)
+ 	}
+ 
+ 	if (rx < budget) {
+-		if (napi_complete_done(&ch->napi, rx))
++		if (napi_complete_done(&ch->napi, rx)) {
+ 			ltq_dma_enable_irq(&ch->dma);
++			pr_warn("ltq_dma_enablw_irq\n");
++		}
+ 	}
+ 
+ 	return rx;
+@@ -270,12 +276,16 @@ static int xrx200_tx_housekeeping(struct napi_struct *napi, int budget)
  	netdev_completed_queue(ch->priv->net_dev, pkts, bytes);
  
  	netif_tx_unlock(net_dev);
@@ -40,8 +63,15 @@ index 51ed8a54d380..ca1396a90bf0 100644
 +	}
  
  	if (pkts < budget) {
- 		if (napi_complete_done(&ch->napi, pkts))
-@@ -291,6 +295,8 @@ static netdev_tx_t xrx200_start_xmit(struct sk_buff *skb,
+-		if (napi_complete_done(&ch->napi, pkts))
++		if (napi_complete_done(&ch->napi, pkts)) {
+ 			ltq_dma_enable_irq(&ch->dma);
++			netdev_warn(net_dev, "ltq_dma_enablw_irq\n");
++		}
+ 	}
+ 
+ 	return pkts;
+@@ -291,6 +301,8 @@ static netdev_tx_t xrx200_start_xmit(struct sk_buff *skb,
  	dma_addr_t mapping;
  	int len;
  
@@ -50,7 +80,7 @@ index 51ed8a54d380..ca1396a90bf0 100644
  	skb->dev = net_dev;
  	if (skb_put_padto(skb, ETH_ZLEN)) {
  		net_dev->stats.tx_dropped++;
-@@ -321,8 +327,10 @@ static netdev_tx_t xrx200_start_xmit(struct sk_buff *skb,
+@@ -321,8 +333,10 @@ static netdev_tx_t xrx200_start_xmit(struct sk_buff *skb,
  		LTQ_DMA_TX_OFFSET(byte_offset) | (len & LTQ_DMA_SIZE_MASK);
  	ch->dma.desc++;
  	ch->dma.desc %= LTQ_DESC_NUM;
@@ -62,7 +92,15 @@ index 51ed8a54d380..ca1396a90bf0 100644
  
  	netdev_sent_queue(net_dev, len);
  
-@@ -532,6 +540,7 @@ static int xrx200_remove(struct platform_device *pdev)
+@@ -350,6 +364,7 @@ static irqreturn_t xrx200_dma_irq(int irq, void *ptr)
+ 	if (napi_schedule_prep(&ch->napi)) {
+ 		__napi_schedule(&ch->napi);
+ 		ltq_dma_disable_irq(&ch->dma);
++		pr_warn("ltq_dma_disable_irq\n");
+ 	}
+ 
+ 	ltq_dma_ack_irq(&ch->dma);
+@@ -532,6 +547,7 @@ static int xrx200_remove(struct platform_device *pdev)
  
  	/* free stack related instances */
  	netif_stop_queue(net_dev);
@@ -102,14 +140,14 @@ index 3bc5ca40c9fb..7844b0881d2b 100644
  	 * in which case it must have freed it. Only free it here on error.
  	 */
 diff --git a/net/dsa/tag_gswip.c b/net/dsa/tag_gswip.c
-index 408d4af390a0..a666ba4423b5 100644
+index 408d4af390a0..e8bd33ee1485 100644
 --- a/net/dsa/tag_gswip.c
 +++ b/net/dsa/tag_gswip.c
 @@ -63,6 +63,7 @@ static struct sk_buff *gswip_tag_xmit(struct sk_buff *skb,
  	int err;
  	u8 *gswip_tag;
  
-+	pr_info("gswip_tag_xmit\n");
++	// pr_info("gswip_tag_xmit\n");
  	err = skb_cow_head(skb, GSWIP_TX_HEADER_LEN);
  	if (err)
  		return NULL;
