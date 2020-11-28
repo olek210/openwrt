@@ -297,7 +297,7 @@
 					reset-names = "gphy";
 				};
 			};
-                };
+		};
 
 		eth0: eth@e10b308 {
 			compatible = "lantiq,xrx200-net";
