@@ -107,7 +107,7 @@
 
 		phy13: ethernet-phy@13 {
 			reg = <0x13>;
-			compatible = "lantiq,phy22f", "ethernet-phy-ieee802.3-c22";
+			compatible = "ethernet-phy-ieee802.3-c22";
 		};
 	};
 };

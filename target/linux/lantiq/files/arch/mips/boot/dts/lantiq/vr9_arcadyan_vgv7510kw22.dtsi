@@ -164,19 +164,19 @@
 
 		phy11: ethernet-phy@11 {
 			reg = <0x11>;
-			compatible = "lantiq,phy22f", "ethernet-phy-ieee802.3-c22";
+			compatible = "ethernet-phy-ieee802.3-c22";
 		};
 		phy12: ethernet-phy@12 {
 			reg = <0x12>;
-			compatible = "lantiq,phy22f", "ethernet-phy-ieee802.3-c22";
+			compatible = "ethernet-phy-ieee802.3-c22";
 		};
 		phy13: ethernet-phy@13 {
 			reg = <0x13>;
-			compatible = "lantiq,phy22f", "ethernet-phy-ieee802.3-c22";
+			compatible = "ethernet-phy-ieee802.3-c22";
 		};
 		phy14: ethernet-phy@14 {
 			reg = <0x14>;
-			compatible = "lantiq,phy22f", "ethernet-phy-ieee802.3-c22";
+			compatible = "ethernet-phy-ieee802.3-c22";
 		};
 	};
 };

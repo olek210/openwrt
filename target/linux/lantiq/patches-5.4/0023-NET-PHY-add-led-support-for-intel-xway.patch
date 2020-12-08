@@ -88,29 +88,29 @@ Signed-off-by: John Crispin <blogic@openwrt.org>
 +		compatible = "lantiq,xrx200-mdio";
 +			phy5: ethernet-phy@5 {
 +			reg = <0x1>;
-+			compatible = "lantiq,phy11g", "ethernet-phy-ieee802.3-c22";
++			compatible = "ethernet-phy-ieee802.3-c22";
 +		};
 +		phy11: ethernet-phy@11 {
 +			reg = <0x11>;
-+			compatible = "lantiq,phy22f", "ethernet-phy-ieee802.3-c22";
++			compatible = "ethernet-phy-ieee802.3-c22";
 +			lantiq,led2h = <0x00>;
 +			lantiq,led2l = <0x03>;
 +		};
 +		phy12: ethernet-phy@12 {
 +			reg = <0x12>;
-+			compatible = "lantiq,phy22f", "ethernet-phy-ieee802.3-c22";
++			compatible = "ethernet-phy-ieee802.3-c22";
 +			lantiq,led1h = <0x00>;
 +			lantiq,led1l = <0x03>;
 +		};
 +		phy13: ethernet-phy@13 {
 +			reg = <0x13>;
-+			compatible = "lantiq,phy22f", "ethernet-phy-ieee802.3-c22";
++			compatible = "ethernet-phy-ieee802.3-c22";
 +			lantiq,led2h = <0x00>;
 +			lantiq,led2l = <0x03>;
 +		};
 +		phy14: ethernet-phy@14 {
 +			reg = <0x14>;
-+			compatible = "lantiq,phy22f", "ethernet-phy-ieee802.3-c22";
++			compatible = "ethernet-phy-ieee802.3-c22";
 +			lantiq,led1h = <0x00>;
 +			lantiq,led1l = <0x03>;
 +		};
