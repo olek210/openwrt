@@ -19,9 +19,6 @@
 		bank-width = <2>;
 		reg = <0 0x0 0x800000>;
 
-		pinctrl-0 = <&nand_pins>, <&nand_cs1_pins>;
-		pinctrl-names = "default";
-
 		partitions {
 			compatible = "fixed-partitions";
 			#address-cells = <1>;
@@ -50,6 +47,9 @@
 		reg = <1 0x0 0x2000000>;
 		#address-cells = <1>;
 		#size-cells = <1>;
+
+		pinctrl-0 = <&nand_pins>, <&nand_cs1_pins>;
+		pinctrl-names = "default";
 
 		partition@0 {
 			label = "kernel";
