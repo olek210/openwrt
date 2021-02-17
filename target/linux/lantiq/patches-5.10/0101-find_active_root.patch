@@ -60,9 +60,9 @@
  		return -ENOMEM;
  
  	i = 0;
-@@ -117,12 +152,22 @@ static int parse_fixed_partitions(struct
- 		if (of_get_property(pp, "lock", &len))
- 			parts[i].mask_flags |= MTD_POWERUP_LOCK;
+@@ -120,12 +155,22 @@ static int parse_fixed_partitions(struct
+ 		if (of_property_read_bool(pp, "slc-mode"))
+ 			parts[i].add_flags |= MTD_SLC_ON_MLC_EMULATION;
  
 +		if (!proot_id && of_device_is_compatible(pp, "brnboot,root-selector"))
 +			proot_id = brnboot_get_selected_root_part(master, parts[i].offset);
@@ -83,7 +83,7 @@
  	*pparts = parts;
  	return nr_parts;
  
-@@ -133,6 +178,7 @@ ofpart_fail:
+@@ -136,6 +181,7 @@ ofpart_fail:
  ofpart_none:
  	of_node_put(pp);
  	kfree(parts);
