@@ -8,7 +8,7 @@
 +CONFIG_PHY_MICREL_KSZ90X1=y
  CONFIG_SATAPWR="PC3"
  CONFIG_SPL_SPI_SUNXI=y
- CONFIG_AHCI=y
+ CONFIG_DEFAULT_DEVICE_TREE="sun7i-a20-olinuxino-lime2-emmc"
 --- a/configs/A20-OLinuXino-Lime2_defconfig
 +++ b/configs/A20-OLinuXino-Lime2_defconfig
 @@ -7,6 +7,8 @@ CONFIG_MMC0_CD_PIN="PH1"
@@ -18,8 +18,8 @@
 +CONFIG_PHY_MICREL=y
 +CONFIG_PHY_MICREL_KSZ90X1=y
  CONFIG_SATAPWR="PC3"
+ CONFIG_DEFAULT_DEVICE_TREE="sun7i-a20-olinuxino-lime2"
  CONFIG_AHCI=y
- # CONFIG_SYS_MALLOC_CLEAR_ON_INIT is not set
 --- a/drivers/net/phy/micrel_ksz90x1.c
 +++ b/drivers/net/phy/micrel_ksz90x1.c
 @@ -14,6 +14,8 @@
